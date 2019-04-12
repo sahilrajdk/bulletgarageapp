@@ -2,10 +2,11 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 
-const app = express();
+const jobcards = require("./routes/api/JobCard");
 
+const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json);
+app.use(bodyParser.json());
 
 const db = require("./config/keys").mongoURI;
 
@@ -13,6 +14,10 @@ mongoose
   .connect(db, { useNewUrlParser: true })
   .then(() => console.log("MongoDb connected"))
   .catch(err => console.log(err));
+
+app.get("/", (req, res) => res.send("hello wors"));
+
+app.use("/api/jobcards", jobcards);
 
 const port = process.env.PORT || 5000;
 
