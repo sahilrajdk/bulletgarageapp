@@ -1,0 +1,35 @@
+.sidebar {
+  &__logo img {
+    width: 100%;
+  }
+  i {
+    display: flex;
+    flex-direction: column;
+  }
+  span {
+    margin-top: 1rem;
+    font-size: 1rem;
+    font-weight: 200;
+    text-transform: uppercase;
+    font-family: "Open-Sans", sans-serif;
+  }
+  &__list {
+    list-style: none;
+    li {
+      text-decoration: none;
+      border-radius: 4px;
+      text-align: center;
+      color: white;
+      padding: 1rem 1.5rem;
+      margin: 5rem 0;
+      font-size: 1.8rem;
+      font-weight: 400;
+      letter-spacing: 0.1rem;
+    }
+
+    li:hover,
+    li:active {
+      background-color: rgb(17, 92, 61);
+    }
+  }
+}

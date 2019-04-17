@@ -1,0 +1,261 @@
+.new__jobcard {
+  height: 100%;
+  display: flex;
+  flex: 1;
+  font-size: 4rem;
+
+  &-form {
+    input {
+      margin-bottom: 3rem;
+      display: block;
+      font-size: 4.5rem;
+      height: 6rem;
+      width: 30rem;
+      border-radius: 4px;
+      border: none;
+      padding: 0.5rem !important;
+    }
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .new__jobcard {
+    flex-direction: row;
+    font-size: 2rem;
+    padding: 0 1rem;
+    align-items: center;
+
+    justify-content: space-between;
+    form {
+      width: 98%;
+      height: 100%;
+    }
+    &-form input {
+      background-color: #a3d900;
+      font-size: 2rem;
+      height: 4rem;
+      margin-bottom: 2rem;
+    }
+    .page1 {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-evenly;
+      align-items: center;
+      height: 100%;
+      label {
+        display: none;
+      }
+    }
+
+    .page2 {
+      display: flex;
+      flex-direction: column !important;
+
+      height: 100%;
+      &__header {
+        display: flex;
+      }
+
+      &__content {
+        display: flex;
+
+        flex-direction: row;
+
+        padding: 0 !important;
+        textarea {
+          border: none;
+          display: block;
+          width: 80%;
+        }
+      }
+    }
+  }
+  .lightcheckgroup,
+  .noisecheckgroup,
+  .tyrecheckgroup {
+    align-items: center;
+    width: 100% !important;
+    padding: 0;
+  }
+  .form-buttons {
+    display: flex;
+    flex-direction: column;
+
+    button {
+      font-size: 2rem !important;
+      margin: 0.3rem 0 !important;
+      padding: 1rem 1rem;
+    }
+  }
+}
+
+@media only screen and (max-width: 600px) {
+  .new__jobcard {
+    overflow: scroll;
+    flex-direction: column;
+    font-size: 2rem;
+    padding: 0 1rem;
+    align-items: center;
+    justify-content: space-between;
+    form {
+      width: 98%;
+    }
+    &-form input {
+      font-size: 2rem;
+      height: 4rem;
+      margin-bottom: 2rem;
+    }
+    .page1 {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      label {
+        display: none;
+      }
+    }
+
+    .page2 {
+      display: flex;
+      flex-direction: column;
+
+      &__content {
+        padding: 0 !important;
+        textarea {
+          border: none;
+          display: block;
+        }
+      }
+      .lightcheckgroup,
+      .noisecheckgroup,
+      .tyrecheckgroup {
+        width: 100%;
+        margin: 0;
+        margin-bottom: 1rem;
+        padding: 1rem;
+      }
+    }
+  }
+  .form-buttons {
+    display: flex;
+    flex-direction: column;
+
+    button {
+      font-size: 1.4rem !important;
+      margin: 0.1rem 0 !important;
+      padding: 0.5rem 0.5rem;
+    }
+  }
+}
+
+.page1,
+.page2,
+.page3 {
+  &__header {
+    text-align: center;
+  }
+}
+.page1 {
+  &__content {
+    label {
+      font-size: 2.5rem;
+    }
+  }
+}
+
+.page2 {
+  display: flex;
+  flex-direction: column;
+
+  flex: 1;
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    textarea {
+      border: none;
+      display: block;
+    }
+  }
+
+  .lightcheckgroup,
+  .noisecheckgroup,
+  .tyrecheckgroup {
+    margin: 2rem;
+    width: 400px;
+    padding: 1rem;
+    border-radius: 2px;
+  }
+}
+
+#conditionCheckGroup label {
+  @media only screen and (max-width: 600px) {
+    margin: 3px;
+    background-color: #d4d4d4;
+    border-radius: 4px;
+    border: 1px solid #d0d0d0;
+    overflow: auto;
+    height: 4rem;
+    width: 10rem;
+  }
+  float: left;
+
+  margin: 3px;
+  background-color: #efefef;
+  border-radius: 4px;
+  border: 1px solid #d0d0d0;
+}
+#conditionCheckGroup label span {
+  @media only screen and (max-width: 1024px) {
+    font-size: 1.8rem;
+    padding: 3px;
+  }
+  @media only screen and (max-width: 600px) {
+    font-size: 1.8rem;
+    padding: 5px;
+  }
+
+  text-align: center;
+  font-size: 30px;
+  width: 50px;
+  padding: 10px 0px;
+  display: block;
+}
+#conditionCheckGroup label input {
+  position: absolute;
+  visibility: hidden;
+}
+
+#conditionCheckGroup .nw:checked + span {
+  background-color: #ff4545;
+  color: #f7f7f7;
+}
+
+#conditionCheckGroup .s:checked + span {
+  background-color: #a3fa68;
+  color: #f7f7f7;
+}
+
+#conditionCheckGroup .d:checked + span {
+  background-color: #9c9e3b;
+  color: #f7f7f7;
+}
+.form-buttons {
+  button {
+    font-size: 4rem;
+    margin-bottom: 2rem;
+    width: 100%;
+  }
+  button[type="submit"] {
+    font-size: 4rem;
+    margin-bottom: 2rem;
+    width: 100%;
+    color: #efefef;
+    text-transform: uppercase;
+    background-color: #da372c;
+    margin-top: 1rem !important;
+    &:hover {
+      background-color: #bd3127;
+    }
+  }
+}
