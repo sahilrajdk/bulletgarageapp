@@ -25,22 +25,8 @@
 }
 
 .new__jobcard-form {
-  width: 85% !important;
+  width: 87% !important;
 }
 .form-buttons {
-  width: 15% !important;
-}
-
-.lightcheckgroup,
-.tyrecheckgroup,
-.noisecheckgroup {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-start;
-
-  background-color: rgb(190, 190, 190);
-  textarea {
-    width: 100% !important;
-  }
+  width: 13% !important;
 }

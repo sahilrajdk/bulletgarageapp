@@ -1,12 +1,24 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const graphqlHttp = require("express-graphql");
 
-const jobcards = require("./routes/api/JobCard");
+//mongoose models
+const graphqlSchemas = require("./graphql/schemas/index");
+const graphqlResolvers = require("./graphql/reslovers/index");
 
 const app = express();
-app.use(bodyParser.urlencoded({ extended: false }));
+
 app.use(bodyParser.json());
+
+app.use(
+  "/graphql",
+  graphqlHttp({
+    schema: graphqlSchemas,
+    rootValue: graphqlResolvers,
+    graphiql: true
+  })
+);
 
 const db = require("./config/keys").mongoURI;
 
@@ -15,9 +27,9 @@ mongoose
   .then(() => console.log("MongoDb connected"))
   .catch(err => console.log(err));
 
-app.get("/", (req, res) => res.send("hello wors"));
+//app.get("/", (req, res) => res.send("hello wors"));
 
-app.use("/api/jobcards", jobcards);
+//app.use("/api/jobcards", jobcards);
 
 const port = process.env.PORT || 5000;
 

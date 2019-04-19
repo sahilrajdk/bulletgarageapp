@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import CustomInput from "./CustomInput";
 import DefectRadioGroup from "./DefectRadioGroup";
+import ElectricalRadioGroup from "./ElectricalRadioGroup";
+import PriceDisplay from "./PriceDisplay";
 
 class NewJob extends Component {
   state = {
-    currentPage: 2,
+    currentPage: 3,
     custFirstname: "",
     custLastName: "",
     custPhoneNum: "",
@@ -26,8 +28,20 @@ class NewJob extends Component {
     electricals_indicatorR: "y",
     electricals_horn: "y",
     petrolLevel: "",
-    battery: ""
+    battery: "",
+    jobs: [],
+    job: {
+      description: "",
+      repObserv: "",
+      customerReq: "",
+      typeOfService: "",
+      charges: "",
+      services: []
+    },
+    aproxPrice: ""
   };
+
+  componentDidUpdate() {}
 
   handleChange = e => {
     this.setState({
@@ -35,9 +49,29 @@ class NewJob extends Component {
     });
   };
 
+  handleJobInput = e => {
+    this.setState({
+      job: { ...this.state.job, [e.target.name]: e.target.value }
+    });
+  };
+
+  handleJobsDropDown = e => {
+    const { options } = e.target;
+
+    const value = [];
+
+    for (let i = 0, l = options.length; i < l; i++) {
+      if (options[i].selected) {
+        value.push(options[i].value);
+      }
+    }
+    this.setState({
+      job: { ...this.state.job, services: value }
+    });
+  };
+
   handleNewJobCard = e => {
     e.preventDefault();
-    console.log(this.state);
   };
 
   handlePageButton = value => {
@@ -127,7 +161,7 @@ class NewJob extends Component {
             <h3>Condition Check</h3>
           </div>
           <div className="page2__content">
-            <div>
+            <div className="page2__content__condition-check">
               <DefectRadioGroup
                 nameInState="defects_tank"
                 isChecked={this.state.defects_tank}
@@ -152,15 +186,6 @@ class NewJob extends Component {
                 label="Seat Cover / Torn ?"
                 handleChange={this.handleChange}
               />
-            </div>
-
-            <div>
-              <DefectRadioGroup
-                nameInState="defects_crashgaurd"
-                label="Crash gaurd / bend damage?"
-                isChecked={this.state.defects_crashgaurd}
-                handleChange={this.handleChange}
-              />
               <DefectRadioGroup
                 nameInState="defects_mirrors"
                 label="Mirros / glass"
@@ -173,15 +198,118 @@ class NewJob extends Component {
                 label="Indicators"
                 handleChange={this.handleChange}
               />
+              <DefectRadioGroup
+                nameInState="defects_crashgaurd"
+                label="Crash gaurd/damage?"
+                isChecked={this.state.defects_crashgaurd}
+                handleChange={this.handleChange}
+              />
+            </div>
+            <div>
+              <h3>Electricals Check</h3>
+            </div>
+            <div className="page2__content__electrical-check">
+              <ElectricalRadioGroup
+                nameInState="electricals_headlight"
+                isChecked={this.state.electricals_headlight}
+                label="Headlights"
+                handleChange={this.handleChange}
+              />
+              <ElectricalRadioGroup
+                nameInState="electricals_tailLight"
+                isChecked={this.state.electricals_tailLight}
+                label="Seat Cover / Torn ?"
+                handleChange={this.handleChange}
+              />
+
+              <ElectricalRadioGroup
+                nameInState="electricals_console"
+                label="Mirros / glass"
+                handleChange={this.handleChange}
+                isChecked={this.state.electricals_console}
+              />
+              <ElectricalRadioGroup
+                nameInState="electricals_indicatorF"
+                isChecked={this.state.electricals_indicatorF}
+                label="Indicators"
+                handleChange={this.handleChange}
+              />
+              <ElectricalRadioGroup
+                nameInState="electricals_indicatorR"
+                label="Crash gaurd/damage?"
+                isChecked={this.state.electricals_indicatorR}
+                handleChange={this.handleChange}
+              />
+              <ElectricalRadioGroup
+                nameInState="electricals_horn"
+                label="Crash gaurd/damage?"
+                isChecked={this.state.electricals_horn}
+                handleChange={this.handleChange}
+              />
             </div>
           </div>
         </div>
       );
     } else if (this.state.currentPage === 3) {
       formContent = (
-        <React.Fragment>
-          <h2>Job Details</h2>
-        </React.Fragment>
+        <div className="page3">
+          <div className="page3__header">
+            <h3>Job Details</h3>
+          </div>
+          <div className="page3__content">
+            <CustomInput
+              type="text"
+              name="description"
+              label="Job Description"
+              placeholder="Job Description"
+              onChange={this.handleJobInput}
+              value={this.state.job.description}
+            />
+            <CustomInput
+              type="text"
+              name="repObserv"
+              label="Rep Observation Description"
+              placeholder="Rep Observation"
+              onChange={this.handleJobInput}
+              value={this.state.job.repObserv}
+            />
+            <CustomInput
+              type="text"
+              name="customerReq"
+              label="Customer Request"
+              placeholder="Customer Request"
+              onChange={this.handleJobInput}
+              value={this.state.job.customerReq}
+            />
+            <CustomInput
+              type="text"
+              name="typeOfService"
+              label="Rep Observation Description"
+              placeholder="Rep Observation"
+              onChange={this.handleJobInput}
+              value={this.state.job.typeOfService}
+            />
+            <CustomInput
+              type="text"
+              name="repObserv"
+              label="Rep Observation Description"
+              placeholder="Rep Observation"
+              onChange={this.handleJobInput}
+              value={this.state.job.repObserv}
+            />
+            <select
+              multiple={true}
+              value={this.state.job.services}
+              onChange={this.handleJobsDropDown}
+            >
+              <option value="PAID_SERV">Paid Serv</option>
+              <option value="FREE_SERV">Free Serv</option>
+              <option value="OIL_CHANGE">Chain Serv</option>
+              <option value="CHAIN_SERV">Rpt Serv</option>
+            </select>
+            <div />
+          </div>
+        </div>
       );
     }
 
@@ -194,7 +322,17 @@ class NewJob extends Component {
             onSubmit={this.handleNewJobCard}
           >
             {formContent}
-            {console.log(this.state)}
+
+            <div>
+              {console.log(this.state)}
+              {this.state.job.services.length > 0 ? (
+                <PriceDisplay reqServices={this.state.job.services} />
+              ) : null}
+
+              {/* {this.state.job.services.length !== [] ? (
+                <PriceDisplay priceInfo={this.state.job.services} />
+              ) : null} */}
+            </div>
           </form>
           <div className="form-buttons">
             <div>

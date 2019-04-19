@@ -5,7 +5,7 @@
   font-size: 4rem;
 
   &-form {
-    input {
+    input[type="text"] {
       margin-bottom: 3rem;
       display: block;
       font-size: 4.5rem;
@@ -30,9 +30,9 @@
       width: 98%;
       height: 100%;
     }
-    &-form input {
-      background-color: #a3d900;
+    &-form input[type="text"] {
       font-size: 2rem;
+      background-color: rgb(240, 238, 238);
       height: 4rem;
       margin-bottom: 2rem;
     }
@@ -46,26 +46,38 @@
         display: none;
       }
     }
-
+    .page3 {
+      &__content {
+        select {
+          width: 260px;
+          font-size: 2.5rem;
+          text-transform: uppercase;
+          option {
+            margin: 0.2rem;
+          }
+        }
+      }
+    }
     .page2 {
       display: flex;
       flex-direction: column !important;
-
       height: 100%;
-      &__header {
-        display: flex;
-      }
 
+      &__header {
+      }
       &__content {
         display: flex;
-
-        flex-direction: row;
-
-        padding: 0 !important;
-        textarea {
-          border: none;
-          display: block;
-          width: 80%;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+        height: 100%;
+        &__condition-check {
+          display: flex;
+          flex-wrap: wrap;
+        }
+        &__electrical-check {
+          display: flex;
+          flex-wrap: wrap;
         }
       }
     }
@@ -73,9 +85,6 @@
   .lightcheckgroup,
   .noisecheckgroup,
   .tyrecheckgroup {
-    align-items: center;
-    width: 100% !important;
-    padding: 0;
   }
   .form-buttons {
     display: flex;
@@ -153,6 +162,7 @@
 .page3 {
   &__header {
     text-align: center;
+    color: #e4e4e4;
   }
 }
 .page1 {
@@ -181,8 +191,8 @@
   .lightcheckgroup,
   .noisecheckgroup,
   .tyrecheckgroup {
-    margin: 2rem;
-    width: 400px;
+    margin: 0.2rem;
+    background-color: #c4c4c4;
     padding: 1rem;
     border-radius: 2px;
   }
@@ -240,6 +250,19 @@
   background-color: #9c9e3b;
   color: #f7f7f7;
 }
+#conditionCheckGroup .yes:checked + span {
+  background-color: #479e24;
+  color: #f7f7f7;
+}
+#conditionCheckGroup .no:checked + span {
+  background-color: #a02b23;
+  color: #f7f7f7;
+}
+.servicegroup .paidcb:checked + span {
+  background-color: #18a34d;
+  color: #f7f7f7;
+}
+
 .form-buttons {
   button {
     font-size: 4rem;
@@ -257,5 +280,13 @@
     &:hover {
       background-color: #bd3127;
     }
+  }
+}
+
+.priceul {
+  background-color: #a02b23;
+
+  li {
+    color: black;
   }
 }

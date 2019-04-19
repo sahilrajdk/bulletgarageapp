@@ -1,6 +1,6 @@
 import React from "react";
 
-const DefectRadioGroup = props => {
+const defectRadioGroup = props => {
   return (
     <React.Fragment>
       <div className="lightcheckgroup">
@@ -46,4 +46,4 @@ const DefectRadioGroup = props => {
   );
 };
 
-export default DefectRadioGroup;
+export default defectRadioGroup;
