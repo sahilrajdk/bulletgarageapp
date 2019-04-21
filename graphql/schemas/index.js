@@ -34,6 +34,7 @@ module.exports = buildSchema(`
       charges: String!,
       services: [String!]!
     }
+  
 
 
     type JobCard {
@@ -97,6 +98,7 @@ module.exports = buildSchema(`
     type RootQuery{
       jobCards:[JobCard!]!
       accounts:[Account!]!
+      account(  phoneNum:String!  ):Account 
     } 
     
     type RootMutation{

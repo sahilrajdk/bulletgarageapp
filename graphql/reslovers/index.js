@@ -28,6 +28,21 @@ const getAccount = async acountId => {
 };
 
 module.exports = {
+  account: async args => {
+    try {
+      const account = await Account.findOne({
+        phoneNum: args.phoneNum
+      });
+      if (account) {
+        return account;
+      } else {
+        throw new Error("Phone Number does not match any Account");
+      }
+    } catch (err) {
+      return err;
+    }
+  },
+
   accounts: async () => {
     const accounts = await Account.find();
     try {
@@ -107,7 +122,7 @@ module.exports = {
         battery: args.jobCardInput.battery,
         aproxPrice: args.jobCardInput.aproxPrice,
         jobs: args.jobCardInput.jobs,
-        relatedAccount: "5cb9a0cb77b0e21f44c05487"
+        relatedAccount: "5cb9b5fc9b4ec83978ecb067"
       });
       let createdJobcard;
       const result = await jobCard.save();
@@ -118,7 +133,7 @@ module.exports = {
         relatedAccount: getAccount.bind(this, result._doc.relatedAccount)
       };
 
-      const account = await Account.findById("5cb9a0cb77b0e21f44c05487");
+      const account = await Account.findById("5cb9b5fc9b4ec83978ecb067");
 
       if (!account) {
         throw new Error("Account does not exist");

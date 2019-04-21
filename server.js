@@ -2,13 +2,14 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const graphqlHttp = require("express-graphql");
-
+const cors = require("cors");
 //mongoose models
 const graphqlSchemas = require("./graphql/schemas/index");
 const graphqlResolvers = require("./graphql/reslovers/index");
 
 const app = express();
 
+app.use(cors());
 app.use(bodyParser.json());
 
 app.use(

@@ -1,12 +1,17 @@
 import React, { Component } from "react";
+import AccountPage from "./AccountPage";
 import NewJob from "./NewJob";
+import { BrowserRouter, Link, Route } from "react-router-dom";
 
 class Main extends Component {
   render() {
     return (
-      <div className="maincontent">
-        <NewJob />
-      </div>
+      <BrowserRouter>
+        <div className="maincontent">
+          <Route exact path="/" component={AccountPage} />
+          <Route path="/newJob" component={NewJob} />
+        </div>
+      </BrowserRouter>
     );
   }
 }
