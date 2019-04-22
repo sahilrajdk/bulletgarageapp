@@ -39,7 +39,7 @@ module.exports = {
         throw new Error("Phone Number does not match any Account");
       }
     } catch (err) {
-      return err;
+      throw err;
     }
   },
 
@@ -59,15 +59,16 @@ module.exports = {
 
   createAccount: async args => {
     try {
-      const account = await Account.findOne({ email: args.accountInput.email });
+      const account = await Account.findOne({ email: args.email });
       if (account) {
         throw new Error("Email already exists");
       } else {
+        console.log("reun");
         const account = new Account({
-          firstName: args.accountInput.firstName,
-          lastName: args.accountInput.lastName,
-          phoneNum: args.accountInput.phoneNum,
-          email: args.accountInput.email
+          firstName: args.firstName,
+          lastName: args.lastName,
+          phoneNum: args.phoneNum,
+          email: args.email
         });
 
         const result = await account.save();
@@ -76,6 +77,7 @@ module.exports = {
       }
     } catch (err) {
       console.log(err);
+      throw err;
     }
   },
 

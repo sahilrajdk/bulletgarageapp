@@ -103,7 +103,10 @@ module.exports = buildSchema(`
     
     type RootMutation{
       createJobCard(jobCardInput:JobCardInput):JobCard
-      createAccount(accountInput:AccountInput):Account
+      createAccount( firstName:String!
+        lastName:String!
+        phoneNum:String!
+        email:String!):Account
     }
 
     schema{

@@ -20,8 +20,24 @@
 
 .btn-primary {
   background-color: rgb(3, 158, 29);
+  &:hover {
+    background-color: darken($color: rgb(3, 158, 29), $amount: 0.2);
+  }
 }
 
 .btn-secondary {
   background-color: rgb(255, 102, 0);
+}
+.btn-red {
+  background-color: rgb(255, 0, 0);
+  color: rgb(247, 247, 247);
+}
+
+.custom-link {
+  text-decoration: none;
+  text-transform: uppercase;
+  display: block;
+  width: 100%;
+  margin: 1rem auto;
+  text-align: center;
 }

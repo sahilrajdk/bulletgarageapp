@@ -1,13 +1,18 @@
 import React, { Component } from "react";
 import gql from "graphql-tag";
-import { Query, ApolloConsumer } from "react-apollo";
+import { ApolloConsumer } from "react-apollo";
 import { Link } from "react-router-dom";
+import { graphql, compose } from "react-apollo";
+import getCurrentAccount from "../graphql/currentAccount";
+import updateAccount from "../graphql/updateAccount";
 
 const GET_ACCOUNT_QUERY = gql`
   query getaccountquery($phoneNum: String!) {
     account(phoneNum: $phoneNum) {
       firstName
+      lastName
       email
+      __typename
       phoneNum
     }
   }
@@ -15,7 +20,7 @@ const GET_ACCOUNT_QUERY = gql`
 
 class AccountPage extends Component {
   state = {
-    phoneNumber: "12345678",
+    phoneNumber: "",
     accountInfo: {},
     error: ""
   };
@@ -29,13 +34,17 @@ class AccountPage extends Component {
 
   searchAccount = e => {
     e.preventDefault();
-    let phoneNum;
-    phoneNum = this.state.phoneNumber;
   };
 
   render() {
+    // const {
+    //   currentAccount: { firstName, lastName, phoneNum, email }
+    // } = this.props;
+    const { updateAccount } = this.props;
+
     let phoneNum;
     phoneNum = this.state.phoneNumber;
+    console.log(phoneNum);
     return (
       <ApolloConsumer>
         {client => (
@@ -59,13 +68,25 @@ class AccountPage extends Component {
                     query: GET_ACCOUNT_QUERY,
                     variables: { phoneNum }
                   });
-
+                  if (loading) {
+                    return <h3>loadin...</h3>;
+                  }
                   if (data) {
+                    updateAccount({
+                      variables: {
+                        firstName: "test",
+                        lastName: "testing",
+                        email: "test@gmail.com",
+                        phoneNum: "12345",
+                        __typename: "testype"
+                      }
+                    });
                     this.setState({ accountInfo: data.account, error: "" });
                   }
-                } catch (error) {
+                } catch (err) {
+                  console.log(err);
                   this.setState({
-                    error: error.message.replace("GraphQL error:", "").trim()
+                    error: err.message.replace("GraphQL error:", "").trim()
                   });
                 }
               }}
@@ -91,9 +112,10 @@ class AccountPage extends Component {
               {this.state.error && (
                 <div>
                   <p>{this.state.error}</p>
-                  <button className="custom-btn btn-secondary">
+                  <Link className="custom-btn btn-secondary" to="/new-account">
+                    {" "}
                     New Account
-                  </button>
+                  </Link>
                 </div>
               )}
             </div>
@@ -104,4 +126,11 @@ class AccountPage extends Component {
   }
 }
 
-export default AccountPage;
+export default compose(
+  graphql(getCurrentAccount, {
+    props: ({ data: currentAccount }) => ({
+      currentAccount
+    })
+  }),
+  graphql(updateAccount, { name: "updateAccount" })
+)(AccountPage);

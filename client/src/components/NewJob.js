@@ -3,6 +3,8 @@ import CustomInput from "./CustomInput";
 import DefectRadioGroup from "./DefectRadioGroup";
 import ElectricalRadioGroup from "./ElectricalRadioGroup";
 import PriceDisplay from "./PriceDisplay";
+import currentAccount from "../graphql/currentAccount";
+import { graphql, compose } from "react-apollo";
 
 class NewJob extends Component {
   state = {
@@ -41,7 +43,19 @@ class NewJob extends Component {
     aproxPrice: ""
   };
 
-  componentDidUpdate() {}
+  componentWillMount() {
+    const {
+      currentAccount: {
+        currentAccount: { firstName, lastName, phoneNum, email }
+      }
+    } = this.props;
+    this.setState({
+      custFirstname: firstName,
+      custLastName: lastName,
+      custPhoneNum: phoneNum,
+      custEmail: email
+    });
+  }
 
   handleChange = e => {
     this.setState({
@@ -52,6 +66,48 @@ class NewJob extends Component {
   handleJobInput = e => {
     this.setState({
       job: { ...this.state.job, [e.target.name]: e.target.value }
+    });
+  };
+  handleJobsForm = () => {
+    alert();
+    const {
+      description,
+      repObserv,
+      customerReq,
+      typeOfService,
+      charges,
+      services
+    } = this.state.job;
+
+    const newjob = {
+      description,
+      repObserv,
+      customerReq,
+      typeOfService,
+      charges,
+      services
+    };
+
+    // this.setState(
+    //   {
+    //     jobs: { ...this.state, jobs: newjob }
+    //   },
+    //   () => {
+    //     console.log(this.state.jobs);
+    //   }
+    // );
+
+    this.state.jobs.push(newjob);
+    this.setState({
+      job: {
+        ...this.state.job,
+        description: "",
+        repObserv: "",
+        customerReq: "",
+        typeOfService: "",
+        charges: "",
+        services: []
+      }
     });
   };
 
@@ -71,7 +127,59 @@ class NewJob extends Component {
   };
 
   handleNewJobCard = e => {
+    const {
+      custFirstname,
+      custLastName,
+      custPhoneNum,
+      custEmail,
+      vehicleNum,
+      vehicleMake,
+      vehicleModel,
+      defects_tank,
+      defects_tankLogo,
+      defects_lightglass,
+      defects_seatcover,
+      defects_crashgaurd,
+      defects_mirrors,
+      defects_indicators,
+      electricals_headlight,
+      electricals_tailLight,
+      electricals_console,
+      electricals_indicatorF,
+      electricals_indicatorR,
+      electricals_horn,
+      petrolLevel,
+      battery,
+      jobs
+    } = this.state;
+
     e.preventDefault();
+    const newJobCardData = {
+      custFirstname,
+      custLastName,
+      custPhoneNum,
+      custEmail,
+      vehicleNum,
+      vehicleMake,
+      vehicleModel,
+      defects_tank,
+      defects_tankLogo,
+      defects_lightglass,
+      defects_seatcover,
+      defects_crashgaurd,
+      defects_mirrors,
+      defects_indicators,
+      electricals_headlight,
+      electricals_tailLight,
+      electricals_console,
+      electricals_indicatorF,
+      electricals_indicatorR,
+      electricals_horn,
+      petrolLevel,
+      battery,
+      jobs
+    };
+    console.log(newJobCardData);
   };
 
   handlePageButton = value => {
@@ -91,66 +199,62 @@ class NewJob extends Component {
             <h3>Customer Details</h3>
           </div>
           <div className="page1__content">
-            <div className="page1__left">
-              <CustomInput
-                type="text"
-                name="custFirstname"
-                label="First Name"
-                placeholder="First Name"
-                onChange={this.handleChange}
-                value={this.state.custFirstname}
-              />
-              <CustomInput
-                type="text"
-                name="custLastName"
-                placeholder="Last Name"
-                label="Last Name"
-                onChange={this.handleChange}
-                value={this.state.custLastName}
-              />
-              <CustomInput
-                type="text"
-                name="custPhoneNum"
-                label="Phone Number"
-                placeholder="Phone Number"
-                onChange={this.handleChange}
-                value={this.state.custPhoneNum}
-              />
-              <CustomInput
-                type="text"
-                name="custEmail"
-                label="Email"
-                placeholder="Email Address"
-                onChange={this.handleChange}
-                value={this.state.custEmail}
-              />
-            </div>
-            <div className="page1__right">
-              <CustomInput
-                type="text"
-                name="vehicleNum"
-                placeholder="Bike Reg Number"
-                label="Bike Number"
-                onChange={this.handleChange}
-                value={this.state.vehicleNum}
-              />
-              <CustomInput
-                type="text"
-                name="vehicleMake"
-                label="Manufacturer"
-                placeholder="Manufacturer"
-                onChange={this.handleChange}
-                value={this.state.vehicleMake}
-              />
-              <CustomInput
-                type="text"
-                name="vehicleModel"
-                placeholder="Bike Model"
-                label="Bike Model"
-                onChange={this.handleChange}
-                value={this.state.vehicleModel}
-              />
-            </div>
+            <CustomInput
+              type="text"
+              name="custFirstname"
+              label="First Name"
+              placeholder="First Name"
+              onChange={this.handleChange}
+              value={this.state.custFirstname}
+            />
+            <CustomInput
+              type="text"
+              name="custLastName"
+              placeholder="Last Name"
+              label="Last Name"
+              onChange={this.handleChange}
+              value={this.state.custLastName}
+            />
+            <CustomInput
+              type="text"
+              name="custPhoneNum"
+              label="Phone Number"
+              placeholder="Phone Number"
+              onChange={this.handleChange}
+              value={this.state.custPhoneNum}
+            />
+            <CustomInput
+              type="text"
+              name="custEmail"
+              label="Email"
+              placeholder="Email Address"
+              onChange={this.handleChange}
+              value={this.state.custEmail}
+            />
+            <CustomInput
+              type="text"
+              name="vehicleNum"
+              placeholder="Bike Reg Number"
+              label="Bike Number"
+              onChange={this.handleChange}
+              value={this.state.vehicleNum}
+            />
+            <CustomInput
+              type="text"
+              name="vehicleMake"
+              label="Manufacturer"
+              placeholder="Manufacturer"
+              onChange={this.handleChange}
+              value={this.state.vehicleMake}
+            />
+            <CustomInput
+              type="text"
+              name="vehicleModel"
+              placeholder="Bike Model"
+              label="Bike Model"
+              onChange={this.handleChange}
+              value={this.state.vehicleModel}
+            />
           </div>
         </div>
       );
@@ -160,93 +264,91 @@ class NewJob extends Component {
           <div className="page2__header">
             <h3>Condition Check</h3>
           </div>
-          <div className="page2__content">
-            <div className="page2__content__condition-check">
-              <DefectRadioGroup
-                nameInState="defects_tank"
-                isChecked={this.state.defects_tank}
-                label="Tank / Dents"
-                handleChange={this.handleChange}
-              />
-              <DefectRadioGroup
-                nameInState="defects_tankLogo"
-                isChecked={this.state.defects_tankLogo}
-                label="Tank Logo"
-                handleChange={this.handleChange}
-              />
-              <DefectRadioGroup
-                nameInState="defects_lightglass"
-                isChecked={this.state.defects_lightglass}
-                label="Lights / glass"
-                handleChange={this.handleChange}
-              />
-              <DefectRadioGroup
-                nameInState="defects_seatcover"
-                isChecked={this.state.defects_seatcover}
-                label="Seat Cover / Torn ?"
-                handleChange={this.handleChange}
-              />
-              <DefectRadioGroup
-                nameInState="defects_mirrors"
-                label="Mirros / glass"
-                handleChange={this.handleChange}
-                isChecked={this.state.defects_mirrors}
-              />
-              <DefectRadioGroup
-                nameInState="defects_indicators"
-                isChecked={this.state.defects_indicators}
-                label="Indicators"
-                handleChange={this.handleChange}
-              />
-              <DefectRadioGroup
-                nameInState="defects_crashgaurd"
-                label="Crash gaurd/damage?"
-                isChecked={this.state.defects_crashgaurd}
-                handleChange={this.handleChange}
-              />
-            </div>
-            <div>
-              <h3>Electricals Check</h3>
-            </div>
-            <div className="page2__content__electrical-check">
-              <ElectricalRadioGroup
-                nameInState="electricals_headlight"
-                isChecked={this.state.electricals_headlight}
-                label="Headlights"
-                handleChange={this.handleChange}
-              />
-              <ElectricalRadioGroup
-                nameInState="electricals_tailLight"
-                isChecked={this.state.electricals_tailLight}
-                label="Seat Cover / Torn ?"
-                handleChange={this.handleChange}
-              />
 
-              <ElectricalRadioGroup
-                nameInState="electricals_console"
-                label="Mirros / glass"
-                handleChange={this.handleChange}
-                isChecked={this.state.electricals_console}
-              />
-              <ElectricalRadioGroup
-                nameInState="electricals_indicatorF"
-                isChecked={this.state.electricals_indicatorF}
-                label="Indicators"
-                handleChange={this.handleChange}
-              />
-              <ElectricalRadioGroup
-                nameInState="electricals_indicatorR"
-                label="Crash gaurd/damage?"
-                isChecked={this.state.electricals_indicatorR}
-                handleChange={this.handleChange}
-              />
-              <ElectricalRadioGroup
-                nameInState="electricals_horn"
-                label="Crash gaurd/damage?"
-                isChecked={this.state.electricals_horn}
-                handleChange={this.handleChange}
-              />
-            </div>
+          <div className="page2__content__condition-check">
+            <DefectRadioGroup
+              nameInState="defects_tank"
+              isChecked={this.state.defects_tank}
+              label="Tank / Dents"
+              handleChange={this.handleChange}
+            />
+            <DefectRadioGroup
+              nameInState="defects_tankLogo"
+              isChecked={this.state.defects_tankLogo}
+              label="Tank Logo"
+              handleChange={this.handleChange}
+            />
+            <DefectRadioGroup
+              nameInState="defects_lightglass"
+              isChecked={this.state.defects_lightglass}
+              label="Lights / glass"
+              handleChange={this.handleChange}
+            />
+            <DefectRadioGroup
+              nameInState="defects_seatcover"
+              isChecked={this.state.defects_seatcover}
+              label="Seat Cover / Torn ?"
+              handleChange={this.handleChange}
+            />
+            <DefectRadioGroup
+              nameInState="defects_mirrors"
+              label="Mirros / glass"
+              handleChange={this.handleChange}
+              isChecked={this.state.defects_mirrors}
+            />
+            <DefectRadioGroup
+              nameInState="defects_indicators"
+              isChecked={this.state.defects_indicators}
+              label="Indicators"
+              handleChange={this.handleChange}
+            />
+            <DefectRadioGroup
+              nameInState="defects_crashgaurd"
+              label="Crash gaurd/damage?"
+              isChecked={this.state.defects_crashgaurd}
+              handleChange={this.handleChange}
+            />
+          </div>
+          <div className="page2__header">
+            <h3>Electricals Check</h3>
+          </div>
+          <div className="page2__content__electrical-check">
+            <ElectricalRadioGroup
+              nameInState="electricals_headlight"
+              isChecked={this.state.electricals_headlight}
+              label="Headlights"
+              handleChange={this.handleChange}
+            />
+            <ElectricalRadioGroup
+              nameInState="electricals_tailLight"
+              isChecked={this.state.electricals_tailLight}
+              label="Seat Cover / Torn ?"
+              handleChange={this.handleChange}
+            />
+            <ElectricalRadioGroup
+              nameInState="electricals_console"
+              label="Mirros / glass"
+              handleChange={this.handleChange}
+              isChecked={this.state.electricals_console}
+            />
+            <ElectricalRadioGroup
+              nameInState="electricals_indicatorF"
+              isChecked={this.state.electricals_indicatorF}
+              label="Indicators"
+              handleChange={this.handleChange}
+            />
+            <ElectricalRadioGroup
+              nameInState="electricals_indicatorR"
+              label="Crash gaurd/damage?"
+              isChecked={this.state.electricals_indicatorR}
+              handleChange={this.handleChange}
+            />
+            <ElectricalRadioGroup
+              nameInState="electricals_horn"
+              label="Crash gaurd/damage?"
+              isChecked={this.state.electricals_horn}
+              handleChange={this.handleChange}
+            />
           </div>
         </div>
       );
@@ -257,56 +359,94 @@ class NewJob extends Component {
             <h3>Job Details</h3>
           </div>
           <div className="page3__content">
-            <CustomInput
-              type="text"
-              name="description"
-              label="Job Description"
-              placeholder="Job Description"
-              onChange={this.handleJobInput}
-              value={this.state.job.description}
-            />
-            <CustomInput
-              type="text"
-              name="repObserv"
-              label="Rep Observation Description"
-              placeholder="Rep Observation"
-              onChange={this.handleJobInput}
-              value={this.state.job.repObserv}
-            />
-            <CustomInput
-              type="text"
-              name="customerReq"
-              label="Customer Request"
-              placeholder="Customer Request"
-              onChange={this.handleJobInput}
-              value={this.state.job.customerReq}
-            />
-            <CustomInput
-              type="text"
-              name="typeOfService"
-              label="Rep Observation Description"
-              placeholder="Rep Observation"
-              onChange={this.handleJobInput}
-              value={this.state.job.typeOfService}
-            />
-            <CustomInput
-              type="text"
-              name="repObserv"
-              label="Rep Observation Description"
-              placeholder="Rep Observation"
-              onChange={this.handleJobInput}
-              value={this.state.job.repObserv}
-            />
-            <select
-              multiple={true}
-              value={this.state.job.services}
-              onChange={this.handleJobsDropDown}
-            >
-              <option value="PAID_SERV">Paid Serv</option>
-              <option value="FREE_SERV">Free Serv</option>
-              <option value="OIL_CHANGE">Chain Serv</option>
-              <option value="CHAIN_SERV">Rpt Serv</option>
-            </select>
+            <div className="page3__content-form">
+              <CustomInput
+                type="text"
+                name="description"
+                label="Job Description"
+                placeholder="Job Description"
+                onChange={this.handleJobInput}
+                value={this.state.job.description}
+              />
+              <CustomInput
+                type="text"
+                name="repObserv"
+                label="Rep Observation Description"
+                placeholder="Rep Observation"
+                onChange={this.handleJobInput}
+                value={this.state.job.repObserv}
+              />
+              <CustomInput
+                type="text"
+                name="customerReq"
+                label="Customer Request"
+                placeholder="Customer Request"
+                onChange={this.handleJobInput}
+                value={this.state.job.customerReq}
+              />
+              <CustomInput
+                type="text"
+                name="typeOfService"
+                label="Type of service"
+                placeholder="Type of service"
+                onChange={this.handleJobInput}
+                value={this.state.job.typeOfService}
+              />
+              <CustomInput
+                type="text"
+                name="charges"
+                label="Charges"
+                placeholder="Aprrox Charges"
+                onChange={this.handleJobInput}
+                value={this.state.job.charges}
+              />
+              <select
+                multiple={true}
+                value={this.state.job.services}
+                onChange={this.handleJobsDropDown}
+              >
+                <option value="PAID_SERV">Paid Serv</option>
+                <option value="FREE_SERV">Free Serv</option>
+                <option value="OIL_CHANGE">Chain Serv</option>
+                <option value="CHAIN_SERV">Rpt Serv</option>
+              </select>
+              <button
+                className="custom-btn btn-secondary"
+                onClick={this.handleJobsForm}
+              >
+                Add Job
+              </button>
+            </div>
+            <div className="page3__content-table">
+              <table className="page3-table">
+                <tbody>
+                  <tr>
+                    <th>Description</th>
+                    <th>Type</th>
+                    <th>Charges</th>
+                  </tr>
+
+                  {this.state.jobs.map((job, index) => {
+                    return (
+                      <tr key={index}>
+                        <td>{job.description}</td>
+
+                        <td>{job.typeOfService}</td>
+                        <td>{job.charges}</td>
+                        {/* <td>
+                      <ul>
+                        {job.services.map((service, index) => {
+                          return <li key={index}>{service}</li>;
+                        })}
+                      </ul>
+                    </td> */}
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+
             <div />
           </div>
         </div>
@@ -324,10 +464,9 @@ class NewJob extends Component {
             {formContent}
 
             <div>
-              {console.log(this.state)}
-              {this.state.job.services.length > 0 ? (
+              {/* {this.state.job.services.length > 0 ? (
                 <PriceDisplay reqServices={this.state.job.services} />
-              ) : null}
+              ) : null} */}
 
               {/* {this.state.job.services.length !== [] ? (
                 <PriceDisplay priceInfo={this.state.job.services} />
@@ -344,7 +483,6 @@ class NewJob extends Component {
                   &larr; Prev Page
                 </button>
               ) : null}
-
               <button
                 className="btn-next"
                 onClick={() => this.handlePageButton("next")}
@@ -352,7 +490,6 @@ class NewJob extends Component {
                 Next Page &rarr;
               </button>
             </div>
-
             <button type="submit" form="jobcardform">
               Submit
             </button>
@@ -363,4 +500,10 @@ class NewJob extends Component {
   }
 }
 
-export default NewJob;
+export default compose(
+  graphql(currentAccount, {
+    props: ({ data: currentAccount }) => ({
+      currentAccount
+    })
+  })
+)(NewJob);

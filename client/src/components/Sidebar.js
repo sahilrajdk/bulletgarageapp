@@ -1,11 +1,9 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 
 const MENU_ITEMS = [
-  "NEW JOB",
-  "VIEW JOBS",
-  <i className="fas fa-search">
-    <span>Search</span>
-  </i>
+  { name: "NEW JOB", link: "/newJob" },
+  { name: "NEW ACCOUNT", link: "/new-account" }
 ];
 
 class Sidebar extends Component {
@@ -17,10 +15,10 @@ class Sidebar extends Component {
         </div>
 
         <ul className="sidebar__list">
-          {MENU_ITEMS.map(item => (
-            <li key={item} className="sidebar__list-item">
-              {item}
-            </li>
+          {MENU_ITEMS.map((item, index) => (
+            <Link to={item.link} key={index} className="sidebar__list-item">
+              {item.name}
+            </Link>
           ))}
         </ul>
       </div>

@@ -2,7 +2,7 @@
   display: flex;
   width: 100vw;
   height: 100vh;
-  background-color: rgb(146, 146, 146);
+  background-color: rgb(212, 212, 212);
 }
 
 .sidebar {
@@ -62,10 +62,10 @@
   font-size: 2rem;
 }
 .new__jobcard-form {
-  width: 87% !important;
+  width: 90% !important;
 }
 .form-buttons {
-  width: 13% !important;
+  width: 10% !important;
 }
 
 .searchAccountList {
@@ -78,5 +78,27 @@
     padding: 1rem;
     border-radius: 2px;
     vertical-align: center;
+  }
+}
+
+.newaccount {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  label {
+    font-size: 2rem;
+  }
+  form {
+    input {
+      font-size: 2rem;
+      padding: 0 4px;
+      outline-color: rgb(89, 177, 2);
+    }
+    button[type="submit"] {
+      font-size: 3rem;
+      width: 100%;
+      margin: 0;
+    }
   }
 }
