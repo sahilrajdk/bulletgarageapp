@@ -124,7 +124,7 @@ module.exports = {
         battery: args.jobCardInput.battery,
         aproxPrice: args.jobCardInput.aproxPrice,
         jobs: args.jobCardInput.jobs,
-        relatedAccount: "5cb9b5fc9b4ec83978ecb067"
+        relatedAccount: args.jobCardInput.relatedAccount
       });
       let createdJobcard;
       const result = await jobCard.save();
@@ -135,7 +135,7 @@ module.exports = {
         relatedAccount: getAccount.bind(this, result._doc.relatedAccount)
       };
 
-      const account = await Account.findById("5cb9b5fc9b4ec83978ecb067");
+      const account = await Account.findById(args.jobCardInput.relatedAccount);
 
       if (!account) {
         throw new Error("Account does not exist");

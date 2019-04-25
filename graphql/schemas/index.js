@@ -68,7 +68,7 @@ module.exports = buildSchema(`
     }
 
     input JobCardInput{
-      date:String!
+      date:String
       custFirstname:String!
       custLastName:String!
       custPhoneNum:String!
@@ -93,6 +93,7 @@ module.exports = buildSchema(`
       battery:String!
      jobs:[JobInput]!
      aproxPrice:String!
+     relatedAccount:ID!
     }
 
     type RootQuery{

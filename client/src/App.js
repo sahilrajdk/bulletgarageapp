@@ -4,7 +4,6 @@ import { ApolloProvider } from "react-apollo";
 import "./App.scss";
 import { withClientState } from "apollo-link-state";
 import Sidebar from "./components/Sidebar";
-import Main from "./components/Main";
 import gql from "graphql-tag";
 import { ApolloClient } from "apollo-client";
 import { InMemoryCache } from "apollo-cache-inmemory";
@@ -22,7 +21,8 @@ const defaultState = {
     lastName: "b",
     email: "v",
     phoneNum: "",
-    __typename: "Account"
+    __typename: "Account",
+    _id: ""
   }
 };
 
@@ -33,7 +33,7 @@ const stateLink = withClientState({
     Mutation: {
       updateAccount: (
         _,
-        { firstName, lastName, email, phoneNum, __typename },
+        { _id, firstName, lastName, email, phoneNum, __typename },
         { cache }
       ) => {
         const query = gql`
@@ -43,6 +43,7 @@ const stateLink = withClientState({
               lastName
               email
               phoneNum
+              _id
             }
           }
         `;
@@ -58,9 +59,13 @@ const stateLink = withClientState({
             lastName,
             email,
             phoneNum,
-            __typename
+            __typename,
+            _id
           }
         };
+
+        console.log(data);
+
         cache.writeData({ query, data });
       }
     }

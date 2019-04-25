@@ -14,6 +14,7 @@ const GET_ACCOUNT_QUERY = gql`
       email
       __typename
       phoneNum
+      _id
     }
   }
 `;
@@ -44,7 +45,7 @@ class AccountPage extends Component {
 
     let phoneNum;
     phoneNum = this.state.phoneNumber;
-    console.log(phoneNum);
+
     return (
       <ApolloConsumer>
         {client => (
@@ -72,13 +73,15 @@ class AccountPage extends Component {
                     return <h3>loadin...</h3>;
                   }
                   if (data) {
+                    console.log(data.account._id);
                     updateAccount({
                       variables: {
-                        firstName: "test",
-                        lastName: "testing",
-                        email: "test@gmail.com",
-                        phoneNum: "12345",
-                        __typename: "testype"
+                        id: data.account._id,
+                        firstName: data.account.firstName,
+                        lastName: data.account.lastName,
+                        email: data.account.email,
+                        phoneNum: data.account.phoneNum,
+                        __typename: data.account.__typename
                       }
                     });
                     this.setState({ accountInfo: data.account, error: "" });

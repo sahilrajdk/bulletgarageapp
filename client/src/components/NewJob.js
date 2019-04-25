@@ -2,9 +2,77 @@ import React, { Component } from "react";
 import CustomInput from "./CustomInput";
 import DefectRadioGroup from "./DefectRadioGroup";
 import ElectricalRadioGroup from "./ElectricalRadioGroup";
-import PriceDisplay from "./PriceDisplay";
 import currentAccount from "../graphql/currentAccount";
 import { graphql, compose } from "react-apollo";
+import createNewJobCard from "../graphql/createNewJobCard";
+import { Mutation } from "react-apollo";
+import gql from "graphql-tag";
+
+const TEST = gql`
+  mutation CreateNewJobCard(
+    $date: String!
+    $custFirstname: String!
+    $custLastName: String!
+    $custPhoneNum: String!
+    $custEmail: String!
+    $vehicleNum: String!
+    $vehicleModel: String!
+    $vehicleMake: String!
+    $defects_tank: String!
+    $defects_tankLogo: String!
+    $defects_lightglass: String!
+    $defects_seatcover: String!
+    $defects_crashgaurd: String!
+    $defects_mirrors: String!
+    $defects_indicators: String!
+    $electricals_headlight: String!
+    $electricals_tailLight: String!
+    $electricals_console: String!
+    $electricals_indicatorF: String!
+    $electricals_indicatorR: String!
+    $electricals_horn: String!
+    $petrolLevel: String!
+    $battery: String!
+    $jobs: [JobInput]!
+    $aproxPrice: String!
+    $relatedAccount: ID!
+  ) {
+    createJobCard(
+      jobCardInput: {
+        date: $date
+        custFirstname: $custFirstname
+        custLastName: $custLastName
+        custPhoneNum: $custPhoneNum
+        custEmail: $custEmail
+        vehicleNum: $vehicleNum
+        vehicleModel: $vehicleModel
+        vehicleMake: $vehicleMake
+        defects_tank: $defects_tank
+        defects_tankLogo: $defects_tankLogo
+        defects_lightglass: $defects_lightglass
+        defects_seatcover: $defects_seatcover
+        defects_crashgaurd: $defects_crashgaurd
+        defects_mirrors: $defects_mirrors
+        defects_indicators: $defects_indicators
+        electricals_headlight: $electricals_headlight
+        electricals_tailLight: $electricals_tailLight
+        electricals_console: $electricals_console
+        electricals_indicatorF: $electricals_indicatorF
+        electricals_indicatorR: $electricals_indicatorR
+        electricals_horn: $electricals_horn
+        petrolLevel: $petrolLevel
+        battery: $battery
+        jobs: $jobs
+        aproxPrice: $aproxPrice
+        relatedAccount: $relatedAccount
+      }
+    ) {
+      _id
+      custEmail
+      custPhoneNum
+    }
+  }
+`;
 
 class NewJob extends Component {
   state = {
@@ -29,8 +97,8 @@ class NewJob extends Component {
     electricals_indicatorF: "y",
     electricals_indicatorR: "y",
     electricals_horn: "y",
-    petrolLevel: "",
-    battery: "",
+    petrolLevel: "2",
+    battery: "ok",
     jobs: [],
     job: {
       description: "",
@@ -40,20 +108,28 @@ class NewJob extends Component {
       charges: "",
       services: []
     },
-    aproxPrice: ""
+    aproxPrice: "111",
+    relatedAccount: "",
+    date: ""
   };
 
-  componentWillMount() {
+  componentDidMount() {
+    console.log(this.props);
+
     const {
       currentAccount: {
-        currentAccount: { firstName, lastName, phoneNum, email }
+        currentAccount: { firstName, lastName, phoneNum, email, _id }
       }
     } = this.props;
+
+    console.log(firstName, lastName, phoneNum, email, _id);
     this.setState({
       custFirstname: firstName,
       custLastName: lastName,
       custPhoneNum: phoneNum,
-      custEmail: email
+      custEmail: email,
+      relatedAccount: _id,
+      date: new Date()
     });
   }
 
@@ -68,8 +144,8 @@ class NewJob extends Component {
       job: { ...this.state.job, [e.target.name]: e.target.value }
     });
   };
-  handleJobsForm = () => {
-    alert();
+  handleJobsForm = e => {
+    e.preventDefault();
     const {
       description,
       repObserv,
@@ -87,15 +163,6 @@ class NewJob extends Component {
       charges,
       services
     };
-
-    // this.setState(
-    //   {
-    //     jobs: { ...this.state, jobs: newjob }
-    //   },
-    //   () => {
-    //     console.log(this.state.jobs);
-    //   }
-    // );
 
     this.state.jobs.push(newjob);
     this.setState({
@@ -150,7 +217,9 @@ class NewJob extends Component {
       electricals_horn,
       petrolLevel,
       battery,
-      jobs
+      jobs,
+      relatedAccount,
+      date
     } = this.state;
 
     e.preventDefault();
@@ -177,7 +246,9 @@ class NewJob extends Component {
       electricals_horn,
       petrolLevel,
       battery,
-      jobs
+      jobs,
+      relatedAccount,
+      date
     };
     console.log(newJobCardData);
   };
@@ -191,6 +262,34 @@ class NewJob extends Component {
   };
 
   render() {
+    const {
+      custFirstname,
+      custLastName,
+      custPhoneNum,
+      custEmail,
+      vehicleNum,
+      vehicleMake,
+      vehicleModel,
+      defects_tank,
+      defects_tankLogo,
+      defects_lightglass,
+      defects_seatcover,
+      defects_crashgaurd,
+      defects_mirrors,
+      defects_indicators,
+      electricals_headlight,
+      electricals_tailLight,
+      electricals_console,
+      electricals_indicatorF,
+      electricals_indicatorR,
+      electricals_horn,
+      petrolLevel,
+      battery,
+      jobs,
+      relatedAccount,
+      date,
+      aproxPrice
+    } = this.state;
     let formContent;
     if (this.state.currentPage === 1) {
       formContent = (
@@ -454,48 +553,71 @@ class NewJob extends Component {
     }
 
     return (
-      <React.Fragment>
-        <div className="new__jobcard">
-          <form
-            id="jobcardform"
-            className="new__jobcard-form"
-            onSubmit={this.handleNewJobCard}
-          >
-            {formContent}
-
-            <div>
-              {/* {this.state.job.services.length > 0 ? (
-                <PriceDisplay reqServices={this.state.job.services} />
-              ) : null} */}
-
-              {/* {this.state.job.services.length !== [] ? (
-                <PriceDisplay priceInfo={this.state.job.services} />
-              ) : null} */}
-            </div>
-          </form>
-          <div className="form-buttons">
-            <div>
-              {this.state.currentPage !== 1 ? (
+      <Mutation mutation={createNewJobCard}>
+        {(createJobCard, { data, error, loading }) => (
+          <div className="new__jobcard">
+            <form
+              id="jobcardform"
+              className="new__jobcard-form"
+              onSubmit={e => {
+                e.preventDefault();
+                createJobCard({
+                  variables: {
+                    custFirstname,
+                    custLastName,
+                    custPhoneNum,
+                    custEmail,
+                    vehicleNum,
+                    vehicleMake,
+                    vehicleModel,
+                    defects_tank,
+                    defects_tankLogo,
+                    defects_lightglass,
+                    defects_seatcover,
+                    defects_crashgaurd,
+                    defects_mirrors,
+                    defects_indicators,
+                    electricals_headlight,
+                    electricals_tailLight,
+                    electricals_console,
+                    electricals_indicatorF,
+                    electricals_indicatorR,
+                    electricals_horn,
+                    petrolLevel,
+                    battery,
+                    jobs,
+                    relatedAccount,
+                    date,
+                    aproxPrice
+                  }
+                });
+              }}
+            >
+              {formContent}
+            </form>
+            <div className="form-buttons">
+              <div>
+                {this.state.currentPage !== 1 ? (
+                  <button
+                    className="btn-prev"
+                    onClick={() => this.handlePageButton("prev")}
+                  >
+                    &larr; Prev Page
+                  </button>
+                ) : null}
                 <button
-                  className="btn-prev"
-                  onClick={() => this.handlePageButton("prev")}
+                  className="btn-next"
+                  onClick={() => this.handlePageButton("next")}
                 >
-                  &larr; Prev Page
+                  Next Page &rarr;
                 </button>
-              ) : null}
-              <button
-                className="btn-next"
-                onClick={() => this.handlePageButton("next")}
-              >
-                Next Page &rarr;
-              </button>
+              </div>
+              <button form="jobcardform">Submit</button>
             </div>
-            <button type="submit" form="jobcardform">
-              Submit
-            </button>
+            {console.log(this.state.relatedAccount)}
           </div>
-        </div>
-      </React.Fragment>
+        )}
+      </Mutation>
     );
   }
 }

@@ -2,11 +2,7 @@ import React, { Component } from "react";
 import CustomInput from "./CustomInput";
 import gql from "graphql-tag";
 import { Link } from "react-router-dom";
-import { ApolloConsumer } from "react-apollo";
 import { Mutation } from "react-apollo";
-import axios from "axios";
-import currentAccount from "../graphql/currentAccount";
-import fetch from "fetch";
 
 const CREATE_ACCOUNT_QUERY = gql`
   mutation createAccount(
@@ -26,6 +22,7 @@ const CREATE_ACCOUNT_QUERY = gql`
       email
       phoneNum
       __typename
+      _id
     }
   }
 `;
@@ -38,6 +35,7 @@ const TEST = gql`
       email
       phoneNum
       __typename
+      _id
     }
   }
 `;
@@ -62,13 +60,18 @@ class NewAccount extends Component {
       <Mutation
         mutation={CREATE_ACCOUNT_QUERY}
         update={(cache, { data: { createAccount } }) => {
-          let accountincache = cache.readQuery({ query: TEST });
+          //let accountincache = cache.readQuery({ query: TEST });
 
           console.log(createAccount);
           cache.writeQuery({
             query: TEST,
-            data: { currentAccount: createAccount }
+
+            data: {
+              currentAccount: createAccount
+            }
           });
+          let cacheafterwrite = cache.readQuery({ query: TEST });
+          console.log(cacheafterwrite);
         }}
       >
         {(createAccount, { data, loading }) => (
@@ -80,8 +83,8 @@ class NewAccount extends Component {
                   variables: {
                     firstName: custFirstname,
                     lastName: custLastName,
-                    phoneNum: custEmail,
-                    email: custPhoneNum
+                    phoneNum: custPhoneNum,
+                    email: custEmail
                   }
                 });
               }}
