@@ -50,8 +50,9 @@ class AccountPage extends Component {
       <ApolloConsumer>
         {client => (
           <div className="account__search">
-            <form className="account__search-form">
-              <label htmlFor="account_search-input">Search Account</label>
+            <label htmlFor="account_search-input">Search Account</label>
+
+            <div className="form-group">
               <input
                 onChange={this.handleChange}
                 id="account_search-input"
@@ -60,42 +61,42 @@ class AccountPage extends Component {
                 placeholder="Enter Phone number"
                 value={this.state.phoneNumber}
               />
-            </form>
-            <button
-              className="custom-btn btn-secondary"
-              onClick={async () => {
-                try {
-                  const { data, loading } = await client.query({
-                    query: GET_ACCOUNT_QUERY,
-                    variables: { phoneNum }
-                  });
-                  if (loading) {
-                    return <h3>loadin...</h3>;
-                  }
-                  if (data) {
-                    console.log(data.account._id);
-                    updateAccount({
-                      variables: {
-                        id: data.account._id,
-                        firstName: data.account.firstName,
-                        lastName: data.account.lastName,
-                        email: data.account.email,
-                        phoneNum: data.account.phoneNum,
-                        __typename: data.account.__typename
-                      }
+              <button
+                className="custom-btn btn-secondary btn-inline"
+                onClick={async () => {
+                  try {
+                    const { data, loading } = await client.query({
+                      query: GET_ACCOUNT_QUERY,
+                      variables: { phoneNum }
                     });
-                    this.setState({ accountInfo: data.account, error: "" });
+                    if (loading) {
+                      return <h3>loadin...</h3>;
+                    }
+                    if (data) {
+                      console.log(data.account._id);
+                      updateAccount({
+                        variables: {
+                          id: data.account._id,
+                          firstName: data.account.firstName,
+                          lastName: data.account.lastName,
+                          email: data.account.email,
+                          phoneNum: data.account.phoneNum,
+                          __typename: data.account.__typename
+                        }
+                      });
+                      this.setState({ accountInfo: data.account, error: "" });
+                    }
+                  } catch (err) {
+                    console.log(err);
+                    this.setState({
+                      error: err.message.replace("GraphQL error:", "").trim()
+                    });
                   }
-                } catch (err) {
-                  console.log(err);
-                  this.setState({
-                    error: err.message.replace("GraphQL error:", "").trim()
-                  });
-                }
-              }}
-            >
-              Search
-            </button>
+                }}
+              >
+                Search
+              </button>
+            </div>
             <div>
               {this.state.accountInfo.phoneNum && (
                 <ul className="searchAccountList">

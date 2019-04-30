@@ -10,6 +10,7 @@ import { InMemoryCache } from "apollo-cache-inmemory";
 import { HttpLink } from "apollo-link-http";
 import { ApolloLink } from "apollo-link";
 import { BrowserRouter, Route } from "react-router-dom";
+import Main from "./components/Main";
 import AccountPage from "./components/AccountPage";
 import NewJob from "./components/NewJob";
 import NewAccount from "./components/NewAccount";
@@ -89,11 +90,7 @@ class App extends Component {
         <ApolloProvider client={client}>
           <div className="app">
             <Sidebar />
-            <div className="maincontent">
-              <Route exact path="/" component={AccountPage} />
-              <Route path="/newJob" component={NewJob} />
-              <Route path="/new-account" component={NewAccount} />
-            </div>
+            <Main />
             {console.log(cache)}
           </div>
         </ApolloProvider>

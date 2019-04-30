@@ -1,5 +1,4 @@
 .customInput {
-  margin-bottom: 2rem;
   display: block;
   font-size: 4.5rem;
   height: 6rem;
@@ -14,7 +13,7 @@
   padding: 1rem;
   text-transform: none;
   border-radius: 2px;
-  margin: 0 1rem;
+
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
@@ -40,4 +39,8 @@
   width: 100%;
   margin: 1rem auto;
   text-align: center;
+}
+
+.btn-inline {
+  display: inline;
 }

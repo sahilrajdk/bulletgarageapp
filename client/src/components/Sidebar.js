@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link } from "react-router-dom";
 
 const MENU_ITEMS = [
+  { name: "HOME", link: "/" },
   { name: "NEW JOB", link: "/newJob" },
   { name: "NEW ACCOUNT", link: "/new-account" }
 ];

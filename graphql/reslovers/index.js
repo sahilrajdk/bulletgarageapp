@@ -43,8 +43,12 @@ module.exports = {
     }
   },
 
-  accounts: async () => {
-    const accounts = await Account.find();
+  accounts: async args => {
+    console.log(args);
+    const accounts = await Account.find()
+      .skip(args.offset)
+      .limit(args.limit);
+
     try {
       return accounts.map(account => {
         return {

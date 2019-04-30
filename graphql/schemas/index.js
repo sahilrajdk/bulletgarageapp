@@ -6,6 +6,8 @@ module.exports = buildSchema(`
       firstName:String!
       lastName:String!
       phoneNum:String!
+      offset: Int!
+       limit: Int!
       email:String!
       prevServices:[JobCard!]
     }
@@ -98,7 +100,7 @@ module.exports = buildSchema(`
 
     type RootQuery{
       jobCards:[JobCard!]!
-      accounts:[Account!]!
+      accounts(offset: Int!, limit: Int!):[Account!]!
       account(  phoneNum:String!  ):Account 
     } 
     
