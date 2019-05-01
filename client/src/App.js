@@ -11,9 +11,6 @@ import { HttpLink } from "apollo-link-http";
 import { ApolloLink } from "apollo-link";
 import { BrowserRouter, Route } from "react-router-dom";
 import Main from "./components/Main";
-import AccountPage from "./components/AccountPage";
-import NewJob from "./components/NewJob";
-import NewAccount from "./components/NewAccount";
 
 const cache = new InMemoryCache();
 const defaultState = {
