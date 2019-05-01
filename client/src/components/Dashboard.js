@@ -9,8 +9,8 @@ class Dashboard extends Component {
       <div className="dashboard__page">
         <h2 className="dashboard__page-header">Dashboard</h2>
         <div className="dashboard__page-contents">
-          <AccountsListContainer />
           <JobsDue />
+          <AccountsListContainer />
         </div>
       </div>
     );

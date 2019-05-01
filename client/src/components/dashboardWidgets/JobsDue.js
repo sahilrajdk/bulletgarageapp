@@ -28,8 +28,7 @@ const JobsDue = () => (
               {data.jobCards.map(jobCard => {
                 return (
                   <li key={jobCard._id}>
-                    {jobCard.vehicleNum},{jobCard.custPhoneNum},
-                    {jobCard.custEmail}
+                    {jobCard.vehicleNum},{jobCard.custPhoneNum}
                   </li>
                 );
               })}
