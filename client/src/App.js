@@ -74,7 +74,7 @@ const client = new ApolloClient({
   link: ApolloLink.from([
     stateLink,
     new HttpLink({
-      uri: "http://localhost:5000/graphql"
+      uri: `http://localhost:5000/graphql`
     })
   ]),
   cache
