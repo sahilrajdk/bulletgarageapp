@@ -2,7 +2,7 @@ import gql from "graphql-tag";
 
 export default gql`
   mutation CreateNewJobCard(
-    $date: String!
+    $serviceDueDate: String!
     $custFirstname: String!
     $custLastName: String!
     $custPhoneNum: String!
@@ -31,7 +31,7 @@ export default gql`
   ) {
     createJobCard(
       jobCardInput: {
-        date: $date
+        serviceDueDate: $serviceDueDate
         custFirstname: $custFirstname
         custLastName: $custLastName
         custPhoneNum: $custPhoneNum

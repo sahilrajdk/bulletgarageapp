@@ -3,8 +3,8 @@ import gql from "graphql-tag";
 import { ApolloConsumer } from "react-apollo";
 import { Link } from "react-router-dom";
 import { graphql, compose } from "react-apollo";
-import getCurrentAccount from "../graphql/currentAccount";
-import updateAccount from "../graphql/updateAccount";
+import getCurrentAccount from "../graphql/clientSchema/currentAccount";
+import updateAccount from "../graphql/clientSchema/updateAccount";
 
 const GET_ACCOUNT_QUERY = gql`
   query getaccountquery($phoneNum: String!) {
@@ -23,7 +23,7 @@ class AccountPage extends Component {
   state = {
     phoneNumber: "",
     accountInfo: {},
-    error: ""
+    errors: []
   };
 
   componentDidUpdate() {}
@@ -65,7 +65,7 @@ class AccountPage extends Component {
                 className="custom-btn btn-secondary btn-inline"
                 onClick={async () => {
                   try {
-                    const { data, loading } = await client.query({
+                    const { data, loading, error } = await client.query({
                       query: GET_ACCOUNT_QUERY,
                       variables: { phoneNum }
                     });
@@ -84,7 +84,11 @@ class AccountPage extends Component {
                           __typename: data.account.__typename
                         }
                       });
-                      this.setState({ accountInfo: data.account, error: "" });
+                      this.setState({ accountInfo: data.account });
+                    }
+                    if (error) {
+                      console.log(error.graphQLErrors);
+                      this.setState({ errors: error });
                     }
                   } catch (err) {
                     console.log(err);

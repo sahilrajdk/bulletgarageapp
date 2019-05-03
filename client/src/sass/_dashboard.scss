@@ -1,7 +1,8 @@
 .dashboard__page {
   display: flex;
   flex-direction: column;
-
+  background-color: rebeccapurple;
+  height: 100%;
   padding: 2rem;
   &-header {
     text-transform: uppercase;
@@ -11,11 +12,11 @@
 
   &-contents {
     display: flex;
-    justify-content: space-evenly;
   }
 }
 
-.dashboard__accounts-widget {
+.dashboard__accounts-widget,
+.dashboard__jobs-widget {
   background-color: rgb(228, 231, 231);
   box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   margin-left: 0.2rem;
@@ -26,6 +27,7 @@
     font-size: 2rem;
   }
 }
+
 .accounts__List {
   min-height: 400px;
   height: 400px;

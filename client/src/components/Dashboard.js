@@ -3,7 +3,6 @@ import JobsDue from "./dashboardWidgets/JobsDue";
 import AccountsListContainer from "./dashboardWidgets/AccountsListContainer";
 
 class Dashboard extends Component {
-  state = {};
   render() {
     return (
       <div className="dashboard__page">

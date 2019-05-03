@@ -33,6 +33,7 @@ module.exports = {
       const account = await Account.findOne({
         phoneNum: args.phoneNum
       });
+
       if (account) {
         return account;
       } else {
@@ -46,6 +47,7 @@ module.exports = {
   accounts: async args => {
     console.log(args);
     const accounts = await Account.find()
+      .sort(args.sort)
       .skip(args.offset)
       .limit(args.limit);
 
@@ -67,7 +69,6 @@ module.exports = {
       if (account) {
         throw new Error("Email already exists");
       } else {
-        console.log("reun");
         const account = new Account({
           firstName: args.firstName,
           lastName: args.lastName,
@@ -76,7 +77,7 @@ module.exports = {
         });
 
         const result = await account.save();
-        console.log(result);
+
         return { ...result._doc };
       }
     } catch (err) {
@@ -92,7 +93,7 @@ module.exports = {
       return jobcards.map(jobcard => {
         return {
           ...jobcard._doc,
-          date: new Date(jobcard._doc.date).toISOString(),
+
           relatedAccount: getAccount.bind(this, jobcard._doc.relatedAccount)
         };
       });
@@ -103,7 +104,10 @@ module.exports = {
   createJobCard: async args => {
     try {
       const jobCard = new JobCard({
-        date: new Date(args.jobCardInput.date),
+        serviceDueDate: new Date(
+          args.jobCardInput.serviceDueDate
+        ).toISOString(),
+        createdAt: new Date(),
         custFirstname: args.jobCardInput.custFirstname,
         custLastName: args.jobCardInput.custLastName,
         custPhoneNum: args.jobCardInput.custPhoneNum,
@@ -135,7 +139,7 @@ module.exports = {
 
       createdJobcard = {
         ...result._doc,
-        date: new Date(result._doc.date).toISOString(),
+
         relatedAccount: getAccount.bind(this, result._doc.relatedAccount)
       };
 

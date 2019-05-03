@@ -2,95 +2,48 @@ import React, { Component } from "react";
 import CustomInput from "./CustomInput";
 import DefectRadioGroup from "./DefectRadioGroup";
 import ElectricalRadioGroup from "./ElectricalRadioGroup";
-import currentAccount from "../graphql/currentAccount";
+import currentAccount from "../graphql/clientSchema/currentAccount";
 import { graphql, compose } from "react-apollo";
-import createNewJobCard from "../graphql/createNewJobCard";
+import createNewJobCard from "../graphql/clientSchema/createNewJobCard";
 import { Mutation } from "react-apollo";
 import gql from "graphql-tag";
+import GET_ACCOUNTS_QUERY from "./../graphql/clientSchema/getAllAccounts";
+import GET_JOBS_QUERY from "../graphql/clientSchema/getAllJobsDue";
 
-const TEST = gql`
-  mutation CreateNewJobCard(
-    $date: String!
-    $custFirstname: String!
-    $custLastName: String!
-    $custPhoneNum: String!
-    $custEmail: String!
-    $vehicleNum: String!
-    $vehicleModel: String!
-    $vehicleMake: String!
-    $defects_tank: String!
-    $defects_tankLogo: String!
-    $defects_lightglass: String!
-    $defects_seatcover: String!
-    $defects_crashgaurd: String!
-    $defects_mirrors: String!
-    $defects_indicators: String!
-    $electricals_headlight: String!
-    $electricals_tailLight: String!
-    $electricals_console: String!
-    $electricals_indicatorF: String!
-    $electricals_indicatorR: String!
-    $electricals_horn: String!
-    $petrolLevel: String!
-    $battery: String!
-    $jobs: [JobInput]!
-    $aproxPrice: String!
-    $relatedAccount: ID!
-  ) {
-    createJobCard(
-      jobCardInput: {
-        date: $date
-        custFirstname: $custFirstname
-        custLastName: $custLastName
-        custPhoneNum: $custPhoneNum
-        custEmail: $custEmail
-        vehicleNum: $vehicleNum
-        vehicleModel: $vehicleModel
-        vehicleMake: $vehicleMake
-        defects_tank: $defects_tank
-        defects_tankLogo: $defects_tankLogo
-        defects_lightglass: $defects_lightglass
-        defects_seatcover: $defects_seatcover
-        defects_crashgaurd: $defects_crashgaurd
-        defects_mirrors: $defects_mirrors
-        defects_indicators: $defects_indicators
-        electricals_headlight: $electricals_headlight
-        electricals_tailLight: $electricals_tailLight
-        electricals_console: $electricals_console
-        electricals_indicatorF: $electricals_indicatorF
-        electricals_indicatorR: $electricals_indicatorR
-        electricals_horn: $electricals_horn
-        petrolLevel: $petrolLevel
-        battery: $battery
-        jobs: $jobs
-        aproxPrice: $aproxPrice
-        relatedAccount: $relatedAccount
-      }
-    ) {
+const GET_ACCOUNT = gql`
+  query Account($phoneNum: String!) {
+    account(phoneNum: $phoneNum) {
       _id
-      custEmail
-      custPhoneNum
+      firstName
+      lastName
+      phoneNum
+      email
     }
   }
 `;
 
 class NewJob extends Component {
+  constructor(props) {
+    super(props);
+  }
+
   state = {
-    currentPage: 3,
+    currentPage: 1,
     custFirstname: "",
     custLastName: "",
     custPhoneNum: "",
     custEmail: "",
-    vehicleNum: "",
-    vehicleMake: "",
-    vehicleModel: "",
-    defects_tank: "",
-    defects_tankLogo: "",
-    defects_lightglass: "",
-    defects_seatcover: "",
-    defects_crashgaurd: "",
-    defects_mirrors: "",
-    defects_indicators: "",
+    serviceDueDate: "",
+    vehicleNum: "dvcdsvs",
+    vehicleMake: "sdfsdf",
+    vehicleModel: "sdfsdf",
+    defects_tank: "sdfsdf",
+    defects_tankLogo: "s",
+    defects_lightglass: "s",
+    defects_seatcover: "s",
+    defects_crashgaurd: "s",
+    defects_mirrors: "s",
+    defects_indicators: "s",
     electricals_headlight: "y",
     electricals_tailLight: "y",
     electricals_console: "y",
@@ -101,37 +54,32 @@ class NewJob extends Component {
     battery: "ok",
     jobs: [],
     job: {
-      description: "",
-      repObserv: "",
-      customerReq: "",
-      typeOfService: "",
-      charges: "",
+      description: "afsdf",
+      repObserv: "sfgfdg",
+      customerReq: "fdgdfgfd",
+      typeOfService: "free",
+      charges: "222",
       services: []
     },
     aproxPrice: "111",
-    relatedAccount: "",
-    date: ""
+    relatedAccount: ""
   };
-
-  componentDidMount() {
-    console.log(this.props);
-
+  componentWillReceiveProps(nextProps) {
+    console.log("propsrec");
     const {
-      currentAccount: {
-        currentAccount: { firstName, lastName, phoneNum, email, _id }
+      data: {
+        account: { firstName, lastName, email, phoneNum, _id }
       }
-    } = this.props;
-
-    console.log(firstName, lastName, phoneNum, email, _id);
+    } = nextProps;
     this.setState({
       custFirstname: firstName,
       custLastName: lastName,
       custPhoneNum: phoneNum,
       custEmail: email,
-      relatedAccount: _id,
-      date: new Date()
+      relatedAccount: _id
     });
   }
+  componentDidMount() {}
 
   handleChange = e => {
     this.setState({
@@ -193,64 +141,18 @@ class NewJob extends Component {
     });
   };
 
-  handleNewJobCard = e => {
-    const {
-      custFirstname,
-      custLastName,
-      custPhoneNum,
-      custEmail,
-      vehicleNum,
-      vehicleMake,
-      vehicleModel,
-      defects_tank,
-      defects_tankLogo,
-      defects_lightglass,
-      defects_seatcover,
-      defects_crashgaurd,
-      defects_mirrors,
-      defects_indicators,
-      electricals_headlight,
-      electricals_tailLight,
-      electricals_console,
-      electricals_indicatorF,
-      electricals_indicatorR,
-      electricals_horn,
-      petrolLevel,
-      battery,
-      jobs,
-      relatedAccount,
-      date
-    } = this.state;
+  handleChangeServiceDueDate = e => {
+    console.log(e.target.value);
 
-    e.preventDefault();
-    const newJobCardData = {
-      custFirstname,
-      custLastName,
-      custPhoneNum,
-      custEmail,
-      vehicleNum,
-      vehicleMake,
-      vehicleModel,
-      defects_tank,
-      defects_tankLogo,
-      defects_lightglass,
-      defects_seatcover,
-      defects_crashgaurd,
-      defects_mirrors,
-      defects_indicators,
-      electricals_headlight,
-      electricals_tailLight,
-      electricals_console,
-      electricals_indicatorF,
-      electricals_indicatorR,
-      electricals_horn,
-      petrolLevel,
-      battery,
-      jobs,
-      relatedAccount,
-      date
-    };
-    console.log(newJobCardData);
+    console.log(e.target.valuetoISOString());
+
+    let newtime;
+    newtime = new Date(e.target.value);
+    console.log(newtime);
+
+    this.setState({
+      serviceDueDate: newtime
+    });
   };
 
   handlePageButton = value => {
@@ -287,7 +189,7 @@ class NewJob extends Component {
       battery,
       jobs,
       relatedAccount,
-      date,
+      serviceDueDate,
       aproxPrice
     } = this.state;
     let formContent;
@@ -298,62 +200,67 @@ class NewJob extends Component {
             <h3>Customer Details</h3>
           </div>
           <div className="page1__content">
-            <CustomInput
-              type="text"
-              name="custFirstname"
-              label="First Name"
-              placeholder="First Name"
-              onChange={this.handleChange}
-              value={this.state.custFirstname}
-            />
-            <CustomInput
-              type="text"
-              name="custLastName"
-              placeholder="Last Name"
-              label="Last Name"
-              onChange={this.handleChange}
-              value={this.state.custLastName}
-            />
-            <CustomInput
-              type="text"
-              name="custPhoneNum"
-              label="Phone Number"
-              placeholder="Phone Number"
-              onChange={this.handleChange}
-              value={this.state.custPhoneNum}
-            />
-            <CustomInput
-              type="text"
-              name="custEmail"
-              label="Email"
-              placeholder="Email Address"
-              onChange={this.handleChange}
-              value={this.state.custEmail}
-            />
-            <CustomInput
-              type="text"
-              name="vehicleNum"
-              placeholder="Bike Reg Number"
-              label="Bike Number"
-              onChange={this.handleChange}
-              value={this.state.vehicleNum}
-            />
-            <CustomInput
-              type="text"
-              name="vehicleMake"
-              label="Manufacturer"
-              placeholder="Manufacturer"
-              onChange={this.handleChange}
-              value={this.state.vehicleMake}
-            />
-            <CustomInput
-              type="text"
-              name="vehicleModel"
-              placeholder="Bike Model"
-              label="Bike Model"
-              onChange={this.handleChange}
-              value={this.state.vehicleModel}
-            />
+            <div>
+              <CustomInput
+                type="text"
+                name="custFirstname"
+                label="First Name"
+                placeholder="First Name"
+                onChange={this.handleChange}
+                value={this.state.custFirstname}
+              />
+              <CustomInput
+                type="text"
+                name="custLastName"
+                placeholder="Last Name"
+                label="Last Name"
+                onChange={this.handleChange}
+                value={this.state.custLastName}
+              />
+              <CustomInput
+                type="text"
+                name="custPhoneNum"
+                label="Phone Number"
+                placeholder="Phone Number"
+                onChange={this.handleChange}
+                value={this.state.custPhoneNum}
+              />
+              <CustomInput
+                type="text"
+                name="custEmail"
+                label="Email"
+                placeholder="Email Address"
+                onChange={this.handleChange}
+                value={this.state.custEmail}
+              />
+            </div>
+            <div>
+              {" "}
+              <CustomInput
+                type="text"
+                name="vehicleNum"
+                placeholder="Bike Reg Number"
+                label="Bike Number"
+                onChange={this.handleChange}
+                value={this.state.vehicleNum}
+              />
+              <CustomInput
+                type="text"
+                name="vehicleMake"
+                label="Manufacturer"
+                placeholder="Manufacturer"
+                onChange={this.handleChange}
+                value={this.state.vehicleMake}
+              />
+              <CustomInput
+                type="text"
+                name="vehicleModel"
+                placeholder="Bike Model"
+                label="Bike Model"
+                onChange={this.handleChange}
+                value={this.state.vehicleModel}
+              />
+            </div>
           </div>
         </div>
       );
@@ -509,6 +416,12 @@ class NewJob extends Component {
                 <option value="OIL_CHANGE">Chain Serv</option>
                 <option value="CHAIN_SERV">Rpt Serv</option>
               </select>
+              <input
+                type="datetime-local"
+                name="serviceDueDate"
+                value={this.state.serviceDueDate}
+                onChange={this.handleChange}
+              />
               <button
                 className="custom-btn btn-secondary"
                 onClick={this.handleJobsForm}
@@ -553,7 +466,10 @@ class NewJob extends Component {
     }
 
     return (
-      <Mutation mutation={createNewJobCard}>
+      <Mutation
+        mutation={createNewJobCard}
+        refetchQueries={() => [{ query: GET_JOBS_QUERY }]}
+      >
         {(createJobCard, { data, error, loading }) => (
           <div className="new__jobcard">
             <form
@@ -587,10 +503,12 @@ class NewJob extends Component {
                     battery,
                     jobs,
                     relatedAccount,
-                    date,
+                    serviceDueDate,
                     aproxPrice
                   }
                 });
+
+                this.props.history.push("/start");
               }}
             >
               {formContent}
@@ -612,9 +530,9 @@ class NewJob extends Component {
                   Next Page &rarr;
                 </button>
               </div>
-              <button form="jobcardform">Submit</button>
+
+              <button form="jobcardform">submit</button>
             </div>
-            {console.log(this.state.relatedAccount)}
           </div>
         )}
       </Mutation>
@@ -622,10 +540,10 @@ class NewJob extends Component {
   }
 }
 
-export default compose(
-  graphql(currentAccount, {
-    props: ({ data: currentAccount }) => ({
-      currentAccount
-    })
+export default graphql(GET_ACCOUNT, {
+  options: props => ({
+    variables: {
+      phoneNum: props.match.params.phoneNum
+    }
   })
-)(NewJob);
+})(NewJob);

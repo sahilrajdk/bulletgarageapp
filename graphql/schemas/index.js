@@ -8,6 +8,7 @@ module.exports = buildSchema(`
       phoneNum:String!
       offset: Int!
        limit: Int!
+       sort:String!
       email:String!
       prevServices:[JobCard!]
     }
@@ -42,11 +43,12 @@ module.exports = buildSchema(`
     type JobCard {
       relatedAccount:Account!
       _id: ID!
-      date:String!
+      createdAt:String!
       custFirstname:String!
       custLastName:String!
       custPhoneNum:String!
       custEmail:String!
+      serviceDueDate:String!
       vehicleNum:String!
       vehicleModel:String!
       vehicleMake:String!
@@ -70,11 +72,11 @@ module.exports = buildSchema(`
     }
 
     input JobCardInput{
-      date:String
-      custFirstname:String!
+       custFirstname:String!
       custLastName:String!
       custPhoneNum:String!
       custEmail:String!
+      serviceDueDate:String!
       vehicleNum:String!
       vehicleModel:String!
       vehicleMake:String!
@@ -100,8 +102,8 @@ module.exports = buildSchema(`
 
     type RootQuery{
       jobCards:[JobCard!]!
-      accounts(offset: Int!, limit: Int!):[Account!]!
-      account(  phoneNum:String!  ):Account 
+      accounts(offset: Int!, limit: Int!, sort:String!):[Account!]!
+      account(  phoneNum:String , _id:ID  ):Account 
     } 
     
     type RootMutation{

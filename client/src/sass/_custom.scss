@@ -8,7 +8,7 @@
 }
 
 .custom-btn {
-  font-size: 2rem;
+  font-size: 1.5rem;
   border: none;
   padding: 1rem;
   text-transform: none;
@@ -31,7 +31,13 @@
   background-color: rgb(255, 0, 0);
   color: rgb(247, 247, 247);
 }
+.cwhite {
+  color: white;
+}
 
+.ml-1 {
+  margin-left: 1rem;
+}
 .custom-link {
   text-decoration: none;
   text-transform: uppercase;
@@ -43,4 +49,33 @@
 
 .btn-inline {
   display: inline;
+}
+
+.count-span {
+  background-color: rgb(27, 252, 177);
+  border-radius: 10px;
+  padding: 0.5rem 1rem;
+}
+.jobsdueitem {
+  cursor: pointer;
+  transition: all 0.2s !important;
+  &__open {
+    background-color: rgb(147, 206, 80);
+    height: 100px;
+  }
+
+  &__closed {
+    height: 50px;
+  }
+}
+
+.btns_show {
+  transition: all 0.1s;
+  transition-delay: 0.1s;
+  visibility: visible;
+  opacity: 1;
+}
+.btns_hide {
+  visibility: hidden;
+  opacity: 0;
 }

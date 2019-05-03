@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import CustomInput from "./CustomInput";
 import gql from "graphql-tag";
-import { Link } from "react-router-dom";
 import { Mutation } from "react-apollo";
 
 const CREATE_ACCOUNT_QUERY = gql`
@@ -27,7 +26,7 @@ const CREATE_ACCOUNT_QUERY = gql`
   }
 `;
 
-const TEST = gql`
+const updateAccountCacheQuery = gql`
   query {
     currentAccount @client {
       firstName
@@ -60,18 +59,15 @@ class NewAccount extends Component {
       <Mutation
         mutation={CREATE_ACCOUNT_QUERY}
         update={(cache, { data: { createAccount } }) => {
-          //let accountincache = cache.readQuery({ query: TEST });
-
           console.log(createAccount);
+          this.props.history.push(`/account/${createAccount._id}`);
           cache.writeQuery({
-            query: TEST,
+            query: updateAccountCacheQuery,
 
             data: {
               currentAccount: createAccount
             }
           });
-          let cacheafterwrite = cache.readQuery({ query: TEST });
-          console.log(cacheafterwrite);
         }}
       >
         {(createAccount, { data, loading }) => (
@@ -121,18 +117,10 @@ class NewAccount extends Component {
                 onChange={this.handleChange}
                 value={this.state.custEmail}
               />
-
               <button className="custom-btn btn-secondary" type="submit">
-                Submit
+                {loading ? "...." : "SUBMIT"}
               </button>
-              <div>
-                {" "}
-                <Link className="custom-btn btn-red custom-link" to="/newJob">
-                  New Job -->
-                </Link>
-              </div>
             </form>
-            <h1>{loading}</h1>
           </div>
         )}
       </Mutation>

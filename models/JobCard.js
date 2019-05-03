@@ -18,6 +18,11 @@ const jobCardSchema = new Schema({
     type: String,
     required: true
   },
+  serviceDueDate: {
+    type: String,
+    required: true
+  },
+
   vehicleNum: {
     type: String,
     required: true
@@ -94,7 +99,7 @@ const jobCardSchema = new Schema({
     type: Array,
     required: true
   },
-  date: {
+  createdAt: {
     type: Date,
     default: Date.now
   },
