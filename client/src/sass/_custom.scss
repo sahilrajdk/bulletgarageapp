@@ -43,8 +43,14 @@
   text-transform: uppercase;
   display: block;
   width: 100%;
-  margin: 1rem auto;
+  color: azure;
+  padding: 0.5rem;
+  border-radius: 2px;
   text-align: center;
+  font-size: 1.2rem;
+  &:hover {
+    box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.6);
+  }
 }
 
 .btn-inline {
@@ -78,4 +84,8 @@
 .btns_hide {
   visibility: hidden;
   opacity: 0;
+}
+
+input[type="datetime-local"] {
+  height: 25px !important;
 }

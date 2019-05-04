@@ -10,7 +10,6 @@
     "apollo-link-error": "^1.1.10",
     "apollo-link-state": "^0.4.2",
     "axios": "^0.18.0",
-    "fetch": "^1.1.0",
     "graphql": "^14.2.1",
     "node-sass": "^4.11.0",
     "react": "^16.8.6",

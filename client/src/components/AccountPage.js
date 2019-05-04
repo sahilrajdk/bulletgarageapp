@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { graphql, compose } from "react-apollo";
 import getCurrentAccount from "../graphql/clientSchema/currentAccount";
 import updateAccount from "../graphql/clientSchema/updateAccount";
+import Spinner from "./utils/Spinner";
 
 const GET_ACCOUNT_QUERY = gql`
   query getaccountquery($phoneNum: String!) {
@@ -38,13 +39,10 @@ class AccountPage extends Component {
   };
 
   render() {
-    // const {
-    //   currentAccount: { firstName, lastName, phoneNum, email }
-    // } = this.props;
-    const { updateAccount } = this.props;
+    const { firstName, lastName, phoneNum, email } = this.state.accountInfo;
 
-    let phoneNum;
-    phoneNum = this.state.phoneNumber;
+    let searchPhoneNum;
+    searchPhoneNum = this.state.phoneNumber;
 
     return (
       <ApolloConsumer>
@@ -67,23 +65,14 @@ class AccountPage extends Component {
                   try {
                     const { data, loading, error } = await client.query({
                       query: GET_ACCOUNT_QUERY,
-                      variables: { phoneNum }
+                      variables: { phoneNum: searchPhoneNum }
                     });
                     if (loading) {
-                      return <h3>loadin...</h3>;
+                      return <Spinner />;
                     }
                     if (data) {
                       console.log(data.account._id);
-                      updateAccount({
-                        variables: {
-                          id: data.account._id,
-                          firstName: data.account.firstName,
-                          lastName: data.account.lastName,
-                          email: data.account.email,
-                          phoneNum: data.account.phoneNum,
-                          __typename: data.account.__typename
-                        }
-                      });
+
                       this.setState({ accountInfo: data.account });
                     }
                     if (error) {
@@ -105,14 +94,12 @@ class AccountPage extends Component {
               {this.state.accountInfo.phoneNum && (
                 <ul className="searchAccountList">
                   <li>
-                    {this.state.accountInfo.phoneNum},
-                    {this.state.accountInfo.firstName},
-                    {this.state.accountInfo.email}
+                    {phoneNum},{firstName},{email}
                     <button className="custom-btn btn-primary">
-                      <Link to="/newJob">New Service</Link>
+                      <Link to={`/newJob/${phoneNum}`}>New Service</Link>
                     </button>
                     <button className="custom-btn btn-secondary">
-                      <Link to="/newJob">Edit Details</Link>
+                      <Link to="/editCustomer">Edit Details</Link>
                     </button>
                   </li>
                 </ul>

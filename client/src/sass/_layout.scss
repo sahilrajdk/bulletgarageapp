@@ -108,13 +108,16 @@
 .accounts__List,
 .jobsdue__List {
   list-style: none;
+
+  height: 90%;
+
   li:first-of-type {
     margin-top: 0.5rem;
   }
   li {
     font-size: 2rem;
     background-color: whitesmoke;
-    padding: 1rem 2rem;
+    padding: 1rem 1rem;
     margin-bottom: 0.5rem;
     border-radius: 2px;
     transition: all 0.2s;
@@ -122,8 +125,6 @@
     box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
     &:hover {
       box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-    }
-    button {
     }
   }
 }
@@ -146,4 +147,11 @@
       text-decoration: underline;
     }
   }
+}
+
+.newJobPage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
 }
